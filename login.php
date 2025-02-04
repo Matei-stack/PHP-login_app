@@ -3,7 +3,7 @@ include "partials/header.php";
 include "partials/navigation.php";
 
 
-if(isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true){
+if(isUser_logged_in()){
     header(header:"Location:admin.php");
 }
 
@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             $_SESSION['logged_in']= true;
             $_SESSION['username']=$user['username'];
-            header(header:"Location:admin.php");
+            redirect(location: "admin.php");
             exit;
             
 

@@ -18,6 +18,7 @@ include 'db.php';
     <title>Login App SQL/PHP</title>
 
 <link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/admin.css">
 
 </head>
 

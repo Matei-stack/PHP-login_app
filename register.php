@@ -4,6 +4,10 @@ include "partials/header.php";
 include "partials/navigation.php";
 $error = '';
 
+if(isUser_logged_in()){
+    header(header:"Location:admin.php");
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = mysqli_real_escape_string($con, $_POST['username']);
     $email = mysqli_real_escape_string($con, $_POST['email']);
@@ -16,22 +20,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
 
 
-        $sql = "SELECT * FROM users WHERE username='$username' LIMIT  1";
-        $result = mysqli_query($con, $sql);
+        
 
-        if (mysqli_num_rows($result) === 1) {
+        if (user_exist($con, $username)) {
             $error = "Utilizator existent! Va rugam alegeti alt username.";
         } else {
 
-            $passwordHash = password_hash($password, algo: PASSWORD_DEFAULT);
+          
 
-            $sql = "INSERT INTO users (username, password, email) VALUES ('$username', '$passwordHash', '$email')";
-
-            if (mysqli_query($con, $sql)) {
+            if (check_query(create_user($con, $username, $email, $password))) {
     
                 $_SESSION['logged_in']= true;
                 $_SESSION['username']=$username;
-                header(header:"Location:admin.php");
+                redirect(location: "admin.php");
                 exit;
                 
             } else {
